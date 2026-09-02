@@ -316,7 +316,8 @@
       background: #fff;
       box-shadow: 12px 12px 0 rgba(23,33,29,.12);
     }
-    .drawing-canvas { aspect-ratio: 15 / 9; display: grid; place-items: center; padding: clamp(12px, 2vw, 28px); overflow: hidden; }
+    .drawing-canvas { aspect-ratio: 2105 / 1488; display: grid; place-items: center; padding: clamp(8px, 1.5vw, 20px); overflow: hidden; color: inherit; text-decoration: none; cursor: zoom-in; }
+    .drawing-canvas:focus-visible { outline: 3px solid var(--accent); outline-offset: -3px; }
     .drawing-canvas img { width: 100%; height: 100%; object-fit: contain; transition: opacity .18s ease; }
     .drawing-caption {
       display: flex;
@@ -327,8 +328,20 @@
       border-top: 1px solid var(--line);
       font-size: .86rem;
     }
+    .drawing-caption-copy { display: flex; min-width: 0; flex-direction: column; gap: 3px; }
     .drawing-caption strong { font-family: Georgia, serif; font-size: 1.22rem; font-weight: 400; }
     .drawing-caption span { color: var(--muted); }
+    .drawing-expand {
+      flex: 0 0 auto;
+      padding: 9px 13px;
+      border: 1px solid var(--ink);
+      border-radius: 999px;
+      font-size: .78rem;
+      font-weight: 800;
+      text-decoration: none;
+      transition: color .2s ease, background .2s ease;
+    }
+    .drawing-expand:hover, .drawing-expand:focus-visible { color: #fff; background: var(--ink); }
 
     .journey { overflow: hidden; }
     .timeline { position: relative; display: grid; grid-template-columns: repeat(7, minmax(135px, 1fr)); overflow-x: auto; padding: 24px 0 12px; scrollbar-width: thin; }
@@ -540,8 +553,8 @@
       .timeline { margin-right: -16px; }
       .drawing-tabs { margin-right: -16px; }
       .drawing-viewer { box-shadow: 7px 7px 0 rgba(23,33,29,.12); }
-      .drawing-canvas { aspect-ratio: 4 / 3; padding: 8px; }
-      .drawing-caption { align-items: flex-start; flex-direction: column; gap: 4px; }
+      .drawing-canvas { aspect-ratio: 2105 / 1488; padding: 4px; }
+      .drawing-caption { align-items: flex-start; flex-direction: column; gap: 14px; }
       .today-grid { grid-template-columns: 1fr; grid-auto-rows: 300px; }
       .today-card--wide { grid-column: auto; }
       .today-status { min-height: 240px; }
@@ -693,18 +706,23 @@
         </div>
 
         <div class="drawing-tabs reveal" aria-label="Выбор чертежа">
-          <button class="drawing-tab active" type="button" aria-pressed="true" data-image="assets/drawings/plan-first-floor.png" data-alt="Архитектурный план первого этажа" data-caption="План первого этажа">Первый этаж</button>
-          <button class="drawing-tab" type="button" aria-pressed="false" data-image="assets/drawings/plan-second-floor.png" data-alt="Архитектурный план второго этажа" data-caption="План второго этажа">Второй этаж</button>
-          <button class="drawing-tab" type="button" aria-pressed="false" data-image="assets/drawings/section-1-1.png" data-alt="Архитектурный разрез дома 1-1" data-caption="Разрез 1-1">Разрез 1-1</button>
-          <button class="drawing-tab" type="button" aria-pressed="false" data-image="assets/drawings/facade-1-3.png" data-alt="Проектный фасад дома в осях 1-3" data-caption="Фасад 1-3">Фасад 1-3</button>
-          <button class="drawing-tab" type="button" aria-pressed="false" data-image="assets/drawings/facade-3-1.png" data-alt="Проектный фасад дома в осях 3-1" data-caption="Фасад 3-1">Фасад 3-1</button>
-          <button class="drawing-tab" type="button" aria-pressed="false" data-image="assets/drawings/facade-a-zh.png" data-alt="Проектный фасад дома в осях А-Ж" data-caption="Фасад А-Ж">Фасад А-Ж</button>
-          <button class="drawing-tab" type="button" aria-pressed="false" data-image="assets/drawings/facade-zh-a.png" data-alt="Проектный фасад дома в осях Ж-А" data-caption="Фасад Ж-А">Фасад Ж-А</button>
+          <button class="drawing-tab active" type="button" aria-pressed="true" data-image="assets/drawings/plan-first-floor.png?v=2" data-alt="Архитектурный план первого этажа" data-caption="План первого этажа">Первый этаж</button>
+          <button class="drawing-tab" type="button" aria-pressed="false" data-image="assets/drawings/plan-second-floor.png?v=2" data-alt="Архитектурный план второго этажа" data-caption="План второго этажа">Второй этаж</button>
+          <button class="drawing-tab" type="button" aria-pressed="false" data-image="assets/drawings/section-1-1.png?v=2" data-alt="Архитектурный разрез дома 1-1" data-caption="Разрез 1-1">Разрез 1-1</button>
+          <button class="drawing-tab" type="button" aria-pressed="false" data-image="assets/drawings/facade-1-3.png?v=2" data-alt="Проектный фасад дома в осях 1-3" data-caption="Фасад 1-3">Фасад 1-3</button>
+          <button class="drawing-tab" type="button" aria-pressed="false" data-image="assets/drawings/facade-3-1.png?v=2" data-alt="Проектный фасад дома в осях 3-1" data-caption="Фасад 3-1">Фасад 3-1</button>
+          <button class="drawing-tab" type="button" aria-pressed="false" data-image="assets/drawings/facade-a-zh.png?v=2" data-alt="Проектный фасад дома в осях А-Ж" data-caption="Фасад А-Ж">Фасад А-Ж</button>
+          <button class="drawing-tab" type="button" aria-pressed="false" data-image="assets/drawings/facade-zh-a.png?v=2" data-alt="Проектный фасад дома в осях Ж-А" data-caption="Фасад Ж-А">Фасад Ж-А</button>
         </div>
 
         <figure class="drawing-viewer reveal" aria-live="polite">
-          <div class="drawing-canvas"><img id="drawing-image" src="assets/drawings/plan-first-floor.png" alt="Архитектурный план первого этажа" loading="lazy"></div>
-          <figcaption class="drawing-caption"><strong id="drawing-title">План первого этажа</strong><span>Рабочий чертёж · нажмите название выше, чтобы сменить вид</span></figcaption>
+          <a class="drawing-canvas" id="drawing-full-image" href="assets/drawings/plan-first-floor.png?v=2" target="_blank" rel="noopener" aria-label="Открыть план первого этажа в полном размере">
+            <img id="drawing-image" src="assets/drawings/plan-first-floor.png?v=2" alt="Архитектурный план первого этажа" loading="lazy">
+          </a>
+          <figcaption class="drawing-caption">
+            <div class="drawing-caption-copy"><strong id="drawing-title">План первого этажа</strong><span>Целый лист без обрезки · нажмите на чертёж, чтобы увеличить</span></div>
+            <a class="drawing-expand" id="drawing-expand" href="assets/drawings/plan-first-floor.png?v=2" target="_blank" rel="noopener">Открыть крупнее ↗</a>
+          </figcaption>
         </figure>
       </div>
     </section>
@@ -927,6 +945,8 @@
 
     const drawingImage = document.getElementById('drawing-image');
     const drawingTitle = document.getElementById('drawing-title');
+    const drawingFullImage = document.getElementById('drawing-full-image');
+    const drawingExpand = document.getElementById('drawing-expand');
     const drawingTabs = document.querySelectorAll('.drawing-tab');
 
     drawingTabs.forEach(tab => {
@@ -942,6 +962,9 @@
           drawingImage.src = tab.dataset.image;
           drawingImage.alt = tab.dataset.alt;
           drawingTitle.textContent = tab.dataset.caption;
+          drawingFullImage.href = tab.dataset.image;
+          drawingFullImage.setAttribute('aria-label', `Открыть ${tab.dataset.caption.toLowerCase()} в полном размере`);
+          drawingExpand.href = tab.dataset.image;
           drawingImage.style.opacity = '1';
         }, 140);
       });
