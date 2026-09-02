@@ -1,0 +1,655 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Дом от идеи до заселения — личный дневник строительства частного дома инженера-строителя Татьяны из Минска.">
+  <title>Дом от идеи до заселения — личный дневник стройки</title>
+  <style>
+    :root {
+      --ink: #17211d;
+      --paper: #f3efe5;
+      --paper-light: #faf8f2;
+      --accent: #dd5d3b;
+      --accent-dark: #b63e25;
+      --sage: #7f927b;
+      --line: rgba(23, 33, 29, .18);
+      --muted: #647069;
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+      text-rendering: optimizeLegibility;
+    }
+    body.menu-open { overflow: hidden; }
+    a { color: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+
+    .skip-link {
+      position: fixed;
+      left: 16px;
+      top: -60px;
+      z-index: 100;
+      padding: 10px 14px;
+      color: #fff;
+      background: var(--ink);
+      border-radius: 4px;
+      transition: top .2s ease;
+    }
+    .skip-link:focus { top: 16px; }
+
+    .shell { width: min(calc(100% - 48px), var(--max)); margin-inline: auto; }
+    .eyebrow {
+      margin: 0 0 16px;
+      color: var(--accent-dark);
+      font-size: .74rem;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2, .display {
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 400;
+      letter-spacing: -.035em;
+    }
+    h2 { margin-bottom: 18px; font-size: clamp(2.25rem, 5vw, 4.75rem); line-height: .98; }
+    .lead { max-width: 650px; color: var(--muted); font-size: clamp(1rem, 1.8vw, 1.2rem); }
+
+    .site-header {
+      position: absolute;
+      inset: 0 0 auto;
+      z-index: 20;
+      border-bottom: 1px solid rgba(250, 248, 242, .2);
+      color: var(--paper-light);
+    }
+    .nav-wrap { height: 80px; display: flex; align-items: center; justify-content: space-between; }
+    .brand { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; font-weight: 800; }
+    .brand-mark {
+      width: 28px;
+      height: 25px;
+      position: relative;
+      border: 2px solid currentColor;
+      border-top: 0;
+    }
+    .brand-mark::before {
+      content: "";
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      left: 3px;
+      top: -9px;
+      border-left: 2px solid currentColor;
+      border-top: 2px solid currentColor;
+      transform: rotate(45deg);
+    }
+    .nav-links { display: flex; align-items: center; gap: 28px; }
+    .nav-links a { font-size: .88rem; font-weight: 650; text-decoration: none; }
+    .nav-links a:hover, .nav-links a:focus-visible { color: #ffcbbd; }
+    .menu-button {
+      display: none;
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      color: inherit;
+      background: transparent;
+      border: 1px solid rgba(250, 248, 242, .45);
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    .menu-button span,
+    .menu-button::before,
+    .menu-button::after {
+      content: "";
+      display: block;
+      width: 18px;
+      height: 2px;
+      margin: 4px auto;
+      background: currentColor;
+      transition: transform .2s ease, opacity .2s ease;
+    }
+
+    .hero {
+      min-height: 780px;
+      position: relative;
+      display: grid;
+      align-items: center;
+      overflow: hidden;
+      color: var(--paper-light);
+      background: var(--ink);
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: .13;
+      background-image:
+        linear-gradient(rgba(255,255,255,.28) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.28) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: linear-gradient(to right, transparent 0, #000 40%, #000 100%);
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 46vw;
+      height: 46vw;
+      min-width: 520px;
+      min-height: 520px;
+      right: -15vw;
+      bottom: -28vw;
+      border-radius: 50%;
+      background: var(--accent);
+      opacity: .88;
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(320px, .8fr);
+      gap: 6vw;
+      padding-top: 140px;
+      padding-bottom: 78px;
+    }
+    .hero-copy { align-self: end; max-width: 770px; }
+    .hero .eyebrow { color: #ffc0ae; }
+    h1 { margin-bottom: 28px; font-size: clamp(4rem, 8.6vw, 8.25rem); line-height: .82; }
+    .hero-intro { max-width: 650px; margin-bottom: 36px; color: #d8ddd9; font-size: clamp(1.05rem, 2vw, 1.32rem); }
+    .hero-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 14px; }
+    .button {
+      display: inline-flex;
+      min-height: 50px;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 13px 20px;
+      border: 1px solid transparent;
+      border-radius: 3px;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 800;
+      text-decoration: none;
+      transition: transform .2s ease, background .2s ease;
+    }
+    .button:hover, .button:focus-visible { transform: translateY(-2px); background: var(--accent-dark); }
+    .button--quiet { background: transparent; border-color: rgba(255,255,255,.35); }
+    .button--quiet:hover, .button--quiet:focus-visible { background: rgba(255,255,255,.08); }
+    .arrow { font-size: 1.25em; }
+
+    .house-card {
+      position: relative;
+      align-self: center;
+      min-height: 430px;
+      padding: 32px;
+      border: 1px solid rgba(255,255,255,.24);
+      background: rgba(255,255,255,.055);
+      backdrop-filter: blur(8px);
+    }
+    .status { display: flex; align-items: center; gap: 10px; font-weight: 750; }
+    .status-dot { width: 9px; height: 9px; border-radius: 50%; background: #9fc795; box-shadow: 0 0 0 5px rgba(159,199,149,.12); }
+    .house-drawing { position: absolute; inset: 104px 32px 68px; }
+    .roof-line {
+      position: absolute;
+      width: 72%;
+      height: 72%;
+      left: 14%;
+      top: 9%;
+      border-left: 2px solid rgba(255,255,255,.82);
+      border-top: 2px solid rgba(255,255,255,.82);
+      transform: rotate(45deg);
+    }
+    .house-body { position: absolute; inset: 35% 8% 0; border: 2px solid rgba(255,255,255,.82); background: rgba(255,255,255,.03); }
+    .window { position: absolute; width: 28%; aspect-ratio: 1; left: 15%; top: 24%; border: 2px solid #ffc0ae; }
+    .window::before, .window::after { content: ""; position: absolute; background: #ffc0ae; }
+    .window::before { width: 2px; height: 100%; left: calc(50% - 1px); }
+    .window::after { height: 2px; width: 100%; top: calc(50% - 1px); }
+    .door { position: absolute; width: 23%; height: 54%; right: 14%; bottom: 0; border: 2px solid rgba(255,255,255,.82); }
+    .house-note { position: absolute; left: 32px; bottom: 28px; margin: 0; color: #bcc4be; font-size: .82rem; }
+
+    .quick-facts { position: relative; z-index: 3; border-top: 1px solid rgba(255,255,255,.2); }
+    .facts-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
+    .fact { padding: 24px 0; border-right: 1px solid rgba(255,255,255,.2); }
+    .fact + .fact { padding-left: 28px; }
+    .fact:last-child { border-right: 0; }
+    .fact strong { display: block; font-family: Georgia, serif; font-size: 1.8rem; font-weight: 400; }
+    .fact span { color: #aeb8b1; font-size: .78rem; text-transform: uppercase; letter-spacing: .09em; }
+
+    section { padding: clamp(82px, 10vw, 144px) 0; }
+    .section-head { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: end; margin-bottom: 64px; }
+    .section-head > :last-child { justify-self: end; }
+
+    .concept { background: var(--paper-light); }
+    .concept-grid { display: grid; grid-template-columns: .85fr 1.15fr; gap: clamp(48px, 8vw, 100px); align-items: start; }
+    .author-card { position: sticky; top: 32px; }
+    .portrait {
+      aspect-ratio: 4 / 4.6;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+      padding: 28px;
+      color: #fff;
+      background:
+        radial-gradient(circle at 72% 28%, rgba(255,255,255,.22) 0 8%, transparent 8.3%),
+        linear-gradient(145deg, #99a58f 0 44%, #53665b 44% 70%, #283d34 70%);
+    }
+    .portrait::before {
+      content: "Т";
+      position: absolute;
+      top: -42px;
+      right: -5px;
+      color: rgba(255,255,255,.12);
+      font-family: Georgia, serif;
+      font-size: 17rem;
+      line-height: 1;
+    }
+    .portrait-caption { position: relative; z-index: 1; }
+    .portrait-caption strong { display: block; font-family: Georgia, serif; font-size: 1.7rem; font-weight: 400; }
+    .portrait-caption span { color: #d9e2dc; font-size: .9rem; }
+    .concept-copy { padding-top: 8px; }
+    .concept-copy h2 { max-width: 700px; }
+    .concept-copy > p { max-width: 710px; color: var(--muted); font-size: 1.08rem; }
+    .principles { margin-top: 54px; border-top: 1px solid var(--line); }
+    .principle { display: grid; grid-template-columns: 56px 1fr; gap: 18px; padding: 25px 0; border-bottom: 1px solid var(--line); }
+    .principle-no { color: var(--accent-dark); font-size: .78rem; font-weight: 800; }
+    .principle h3 { margin-bottom: 7px; font-size: 1.05rem; }
+    .principle p { margin-bottom: 0; color: var(--muted); font-size: .94rem; }
+
+    .journey { overflow: hidden; }
+    .timeline { position: relative; display: grid; grid-template-columns: repeat(7, minmax(135px, 1fr)); overflow-x: auto; padding: 24px 0 12px; scrollbar-width: thin; }
+    .timeline::before { content: ""; position: absolute; left: 0; right: 0; top: 38px; height: 1px; background: var(--line); }
+    .stage { position: relative; min-height: 205px; padding-right: 28px; }
+    .stage-dot { width: 29px; height: 29px; position: relative; z-index: 1; display: grid; place-items: center; border: 1px solid var(--ink); border-radius: 50%; background: var(--paper); font-size: .64rem; font-weight: 800; }
+    .stage.current .stage-dot { color: #fff; border-color: var(--accent); background: var(--accent); box-shadow: 0 0 0 7px rgba(221,93,59,.12); }
+    .stage h3 { margin: 28px 0 8px; font-family: Georgia, serif; font-size: 1.2rem; font-weight: 400; }
+    .stage p { margin: 0; color: var(--muted); font-size: .84rem; }
+    .stage-tag { display: inline-block; margin-top: 15px; color: var(--accent-dark); font-size: .68rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+
+    .logbook { color: var(--paper-light); background: #223128; }
+    .logbook .eyebrow { color: #ffc0ae; }
+    .logbook .lead { color: #bcc7c0; }
+    .log-grid { display: grid; grid-template-columns: 1.05fr .95fr .95fr; border: 1px solid rgba(255,255,255,.2); }
+    .log-card { min-height: 390px; padding: 30px; border-right: 1px solid rgba(255,255,255,.2); }
+    .log-card:last-child { border-right: 0; }
+    .log-card--accent { color: var(--ink); background: #eb9c76; }
+    .log-number { display: block; margin-bottom: 84px; color: #aab7ae; font-family: Georgia, serif; font-size: 3rem; }
+    .log-card--accent .log-number { color: rgba(23,33,29,.52); }
+    .log-card h3 { margin-bottom: 14px; font-family: Georgia, serif; font-size: 2rem; font-weight: 400; line-height: 1; }
+    .log-card p { margin-bottom: 25px; color: #b9c4bd; }
+    .log-card--accent p { color: #39443e; }
+    .text-link { display: inline-flex; gap: 8px; align-items: center; font-weight: 800; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+
+    .cost-note { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(42px, 7vw, 92px); align-items: center; margin-top: 84px; }
+    .cost-board { padding: 28px; color: var(--ink); background: var(--paper-light); box-shadow: 12px 12px 0 #d75b3c; transform: rotate(-1deg); }
+    .cost-board__head { display: flex; justify-content: space-between; gap: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
+    .cost-board__head strong { font-family: Georgia, serif; font-size: 1.55rem; font-weight: 400; }
+    .cost-row { display: grid; grid-template-columns: 1fr auto; gap: 15px; padding: 15px 0; border-bottom: 1px dashed var(--line); }
+    .cost-row span:last-child { color: var(--muted); }
+    .cost-copy h3 { margin-bottom: 20px; font-family: Georgia, serif; font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 400; line-height: 1; }
+    .cost-copy p { color: #bdc7c0; }
+
+    .posts { background: var(--paper-light); }
+    .posts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .post-card { display: flex; flex-direction: column; min-height: 420px; border: 1px solid var(--line); background: var(--paper-light); transition: transform .2s ease, box-shadow .2s ease; }
+    .post-card:hover { transform: translateY(-5px); box-shadow: 0 16px 36px rgba(23,33,29,.08); }
+    .post-visual { height: 190px; position: relative; overflow: hidden; background-color: #d5dbcf; }
+    .post-visual::before, .post-visual::after { content: ""; position: absolute; }
+    .visual-plan { background-image: linear-gradient(#aab9aa 1px, transparent 1px), linear-gradient(90deg, #aab9aa 1px, transparent 1px); background-size: 24px 24px; }
+    .visual-plan::before { inset: 35px 15% 24px; border: 3px solid #53665b; border-bottom-width: 12px; }
+    .visual-plan::after { width: 60px; height: 60px; left: 40%; top: 72px; border: 3px solid var(--accent); }
+    .visual-calc { background: #e9b18e; }
+    .visual-calc::before { width: 126px; height: 126px; left: calc(50% - 63px); top: 32px; border-radius: 50%; border: 25px solid rgba(23,33,29,.78); border-right-color: rgba(255,255,255,.6); }
+    .visual-calc::after { width: 62%; height: 1px; left: 19%; top: 50%; background: rgba(23,33,29,.38); transform: rotate(-24deg); }
+    .visual-decisions { background: #53665b; }
+    .visual-decisions::before { width: 210px; height: 130px; left: calc(50% - 105px); bottom: -34px; border: 22px solid #f3efe5; transform: rotate(45deg); }
+    .visual-decisions::after { width: 54px; height: 74px; left: calc(50% - 27px); bottom: 0; background: var(--accent); }
+    .post-content { display: flex; flex: 1; flex-direction: column; padding: 24px; }
+    .post-meta { margin-bottom: 20px; color: var(--accent-dark); font-size: .71rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+    .post-card h3 { margin-bottom: 14px; font-family: Georgia, serif; font-size: 1.55rem; font-weight: 400; line-height: 1.12; }
+    .post-card p { color: var(--muted); font-size: .92rem; }
+    .post-card .text-link { margin-top: auto; }
+
+    .follow { padding-block: clamp(90px, 12vw, 170px); text-align: center; background: var(--accent); }
+    .follow-inner { max-width: 920px; }
+    .follow .eyebrow { color: #5f2015; }
+    .follow h2 { font-size: clamp(3rem, 7vw, 6.5rem); }
+    .follow p { max-width: 620px; margin: 0 auto 34px; color: #522a20; font-size: 1.1rem; }
+    .follow .button { color: #fff; background: var(--ink); }
+    .follow .button:hover { background: #31443a; }
+
+    footer { padding: 34px 0; color: #cbd2cd; background: var(--ink); }
+    .footer-inner { display: flex; justify-content: space-between; gap: 28px; align-items: center; }
+    .footer-inner p { margin: 0; font-size: .82rem; }
+    .to-top { font-weight: 750; text-decoration: none; }
+
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .65s ease, transform .65s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 900px) {
+      .nav-links {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 30px;
+        opacity: 0;
+        visibility: hidden;
+        background: var(--ink);
+        transition: opacity .2s ease, visibility .2s ease;
+      }
+      .nav-links a { font-family: Georgia, serif; font-size: 2rem; font-weight: 400; }
+      .menu-button { display: block; position: relative; z-index: 2; }
+      .menu-open .nav-links { z-index: 1; opacity: 1; visibility: visible; }
+      .menu-open .menu-button span { opacity: 0; }
+      .menu-open .menu-button::before { transform: translateY(6px) rotate(45deg); }
+      .menu-open .menu-button::after { transform: translateY(-6px) rotate(-45deg); }
+      .hero-inner, .concept-grid, .section-head, .cost-note { grid-template-columns: 1fr; }
+      .hero-inner { gap: 48px; }
+      .hero { min-height: auto; }
+      .hero-copy { padding-top: 20px; }
+      .house-card { width: min(100%, 500px); min-height: 360px; }
+      .section-head > :last-child { justify-self: start; }
+      .author-card { position: static; display: grid; grid-template-columns: .6fr 1fr; align-items: stretch; }
+      .portrait { min-height: 320px; }
+      .author-card::after { content: "Личный опыт, профессиональная точность и реальные решения без прикрас."; display: flex; align-items: center; padding: 34px; color: var(--paper-light); background: var(--ink); font-family: Georgia, serif; font-size: 1.5rem; line-height: 1.2; }
+      .log-grid { grid-template-columns: 1fr; }
+      .log-card { min-height: 0; border-right: 0; border-bottom: 1px solid rgba(255,255,255,.2); }
+      .log-card:last-child { border-bottom: 0; }
+      .log-number { margin-bottom: 48px; }
+      .posts-grid { grid-template-columns: 1fr 1fr; }
+      .post-card:last-child { grid-column: 1 / -1; }
+    }
+
+    @media (max-width: 620px) {
+      .shell { width: min(calc(100% - 32px), var(--max)); }
+      .nav-wrap { height: 68px; }
+      .brand span:last-child { max-width: 150px; line-height: 1.1; }
+      .hero-inner { padding-top: 110px; padding-bottom: 52px; }
+      h1 { font-size: clamp(3.5rem, 18vw, 5.1rem); }
+      .hero::after { width: 520px; height: 520px; right: -390px; bottom: -280px; }
+      .hero-actions { align-items: stretch; flex-direction: column; }
+      .hero-actions .button { width: 100%; }
+      .house-card { min-height: 315px; padding: 22px; }
+      .house-drawing { inset: 86px 22px 55px; }
+      .house-note { left: 22px; bottom: 20px; }
+      .quick-facts { margin-top: 2px; }
+      .facts-grid { grid-template-columns: 1fr; }
+      .fact, .fact + .fact { padding: 15px 0; border-right: 0; border-bottom: 1px solid rgba(255,255,255,.2); }
+      .fact:last-child { border-bottom: 0; }
+      .fact strong { display: inline; margin-right: 10px; font-size: 1.35rem; }
+      .fact span { font-size: .7rem; }
+      section { padding-block: 78px; }
+      .section-head { gap: 12px; margin-bottom: 44px; }
+      .author-card { display: block; }
+      .author-card::after { display: none; }
+      .portrait { min-height: 370px; }
+      .principle { grid-template-columns: 42px 1fr; }
+      .timeline { margin-right: -16px; }
+      .log-card { padding: 25px; }
+      .cost-note { margin-top: 60px; }
+      .cost-board { padding: 20px; box-shadow: 7px 7px 0 #d75b3c; }
+      .cost-row { font-size: .87rem; }
+      .posts-grid { grid-template-columns: 1fr; }
+      .post-card:last-child { grid-column: auto; }
+      .post-card { min-height: 390px; }
+      .footer-inner { align-items: flex-start; flex-direction: column; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Перейти к содержанию</a>
+
+  <header class="site-header" id="top">
+    <div class="shell nav-wrap">
+      <a class="brand" href="#top" aria-label="Дом от идеи до заселения — на главную">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>Дом от идеи<br>до заселения</span>
+      </a>
+      <nav class="nav-links" id="site-nav" aria-label="Основная навигация">
+        <a href="#concept">О проекте</a>
+        <a href="#journey">Этапы</a>
+        <a href="#logbook">Решения и расходы</a>
+        <a href="#posts">Записи</a>
+      </nav>
+      <button class="menu-button" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Открыть меню"><span></span></button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="shell hero-inner">
+        <div class="hero-copy">
+          <p class="eyebrow">Личный дневник строительства · Минск</p>
+          <h1 id="hero-title">Дом.<br>Своими<br>решениями.</h1>
+          <p class="hero-intro">Путь от первой идеи до жизни в собственном доме — с инженерным взглядом на проекты, сметы, материалы и стройку без прикрас.</p>
+          <div class="hero-actions">
+            <a class="button" href="#journey">Смотреть этапы <span class="arrow" aria-hidden="true">↓</span></a>
+            <a class="button button--quiet" href="#posts">Читать записи</a>
+          </div>
+        </div>
+
+        <aside class="house-card" aria-label="Текущий статус проекта">
+          <div class="status"><span class="status-dot" aria-hidden="true"></span> Дом строится</div>
+          <div class="house-drawing" aria-hidden="true">
+            <span class="roof-line"></span>
+            <span class="house-body"><span class="window"></span><span class="door"></span></span>
+          </div>
+          <p class="house-note">Чертёж за чертежом.<br>Решение за решением.</p>
+        </aside>
+      </div>
+
+      <div class="quick-facts">
+        <div class="shell facts-grid">
+          <div class="fact"><strong>1</strong><span>собственный дом</span></div>
+          <div class="fact"><strong>7</strong><span>этапов пути</span></div>
+          <div class="fact"><strong>∞</strong><span>важных решений</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="concept" id="concept">
+      <div class="shell concept-grid">
+        <aside class="author-card reveal">
+          <div class="portrait" role="img" aria-label="Графический портрет автора проекта">
+            <div class="portrait-caption">
+              <strong>Татьяна</strong>
+              <span>Инженер-строитель и сметчик</span>
+            </div>
+          </div>
+        </aside>
+
+        <div class="concept-copy reveal">
+          <p class="eyebrow">Замысел</p>
+          <h2>Не просто построить. Понять каждое решение.</h2>
+          <p>Я строю частный дом для себя и фиксирую путь профессиональным взглядом: как проектное решение превращается в объём работ, смету, материал и реальный узел на стройке.</p>
+
+          <div class="principles">
+            <article class="principle">
+              <span class="principle-no">01</span>
+              <div><h3>Точность важнее картинки</h3><p>Планировка, конструкция и детали должны работать в реальной жизни, а не только красиво выглядеть.</p></div>
+            </article>
+            <article class="principle">
+              <span class="principle-no">02</span>
+              <div><h3>Считать до начала работ</h3><p>Стоимость решения — часть проектирования. Объёмы, материалы и дополнительные работы требуют внимания заранее.</p></div>
+            </article>
+            <article class="principle">
+              <span class="principle-no">03</span>
+              <div><h3>Сохранять весь опыт</h3><p>Удачные находки, сомнения и ошибки становятся заметками, которые помогают принимать следующие решения увереннее.</p></div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="journey" id="journey">
+      <div class="shell">
+        <div class="section-head reveal">
+          <div><p class="eyebrow">Маршрут проекта</p><h2>От идеи<br>до заселения</h2></div>
+          <p class="lead">Стройка — это не один большой шаг, а последовательность связанных решений. Здесь будет собрана история каждого этапа.</p>
+        </div>
+
+        <div class="timeline" aria-label="Этапы строительства">
+          <article class="stage"><span class="stage-dot">01</span><h3>Идея</h3><p>Потребности семьи, образ дома и исходные условия.</p></article>
+          <article class="stage"><span class="stage-dot">02</span><h3>Проект</h3><p>Планы, фасады, разрезы и проверка решений.</p></article>
+          <article class="stage"><span class="stage-dot">03</span><h3>Смета</h3><p>Объёмы, материалы, цены и резерв бюджета.</p></article>
+          <article class="stage current"><span class="stage-dot">04</span><h3>Стройка</h3><p>Конструкции, узлы и порядок выполнения работ.</p><span class="stage-tag">Текущий путь</span></article>
+          <article class="stage"><span class="stage-dot">05</span><h3>Инженерия</h3><p>Тепло, вода, электричество и удобство эксплуатации.</p></article>
+          <article class="stage"><span class="stage-dot">06</span><h3>Отделка</h3><p>Материалы, свет, мебель и интерьерные решения.</p></article>
+          <article class="stage"><span class="stage-dot">07</span><h3>Заселение</h3><p>Проверка решений жизнью и новые планы.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="logbook" id="logbook">
+      <div class="shell">
+        <div class="section-head reveal">
+          <div><p class="eyebrow">Рабочий журнал</p><h2>Решения.<br>Ошибки. Расходы.</h2></div>
+          <p class="lead">Три слоя одной стройки: почему выбираю именно так, что пришлось пересмотреть и из чего складывается реальная стоимость.</p>
+        </div>
+
+        <div class="log-grid reveal">
+          <article class="log-card log-card--accent">
+            <span class="log-number">01</span>
+            <h3>Решения</h3>
+            <p>Сравнение вариантов планировки, конструкций и материалов — с аргументами за и против.</p>
+            <a class="text-link" href="#posts">К записям <span aria-hidden="true">→</span></a>
+          </article>
+          <article class="log-card">
+            <span class="log-number">02</span>
+            <h3>Ошибки</h3>
+            <p>Что было упущено, где теория разошлась с практикой и как исправлялось решение.</p>
+            <a class="text-link" href="#posts">К записям <span aria-hidden="true">→</span></a>
+          </article>
+          <article class="log-card">
+            <span class="log-number">03</span>
+            <h3>Расходы</h3>
+            <p>Изменение стоимости по этапам, дополнительные работы и выводы для следующего расчёта.</p>
+            <a class="text-link" href="#costs">Как веду учёт <span aria-hidden="true">↓</span></a>
+          </article>
+        </div>
+
+        <div class="cost-note reveal" id="costs">
+          <div class="cost-board" aria-label="Разделы учёта стоимости">
+            <div class="cost-board__head"><strong>Стоимость проекта</strong><span>рабочий учёт</span></div>
+            <div class="cost-row"><span>Подготовка и проектирование</span><span>фиксирую</span></div>
+            <div class="cost-row"><span>Конструкции дома</span><span>сравниваю</span></div>
+            <div class="cost-row"><span>Инженерные системы</span><span>проверяю</span></div>
+            <div class="cost-row"><span>Отделка и благоустройство</span><span>планирую</span></div>
+          </div>
+          <div class="cost-copy">
+            <h3>Цифры — только реальные</h3>
+            <p>Бюджет не заполняется условными красивыми числами. По мере строительства здесь будут появляться фактические объёмы, статьи затрат и комментарии к отклонениям.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="posts" id="posts">
+      <div class="shell">
+        <div class="section-head reveal">
+          <div><p class="eyebrow">Новые записи</p><h2>Дневник<br>начинается</h2></div>
+          <p class="lead">Первые темы задают подход всему блогу: личный опыт, инженерная логика и понятные выводы.</p>
+        </div>
+
+        <div class="posts-grid">
+          <article class="post-card reveal">
+            <div class="post-visual visual-plan" role="img" aria-label="Абстрактный архитектурный план"></div>
+            <div class="post-content">
+              <div class="post-meta">О проекте · вводная запись</div>
+              <h3>Почему я начинаю этот дневник стройки</h3>
+              <p>Что хочется сохранить в процессе и чем профессиональный опыт помогает в собственном проекте.</p>
+              <a class="text-link" href="#concept">Читать кратко <span aria-hidden="true">→</span></a>
+            </div>
+          </article>
+
+          <article class="post-card reveal">
+            <div class="post-visual visual-calc" role="img" aria-label="Абстрактная диаграмма расчёта"></div>
+            <div class="post-content">
+              <div class="post-meta">Смета · подход</div>
+              <h3>Как сметчик смотрит на собственный дом</h3>
+              <p>Почему хороший расчёт начинается не с цены, а с точного объёма и ясного проектного решения.</p>
+              <a class="text-link" href="#costs">О принципе учёта <span aria-hidden="true">→</span></a>
+            </div>
+          </article>
+
+          <article class="post-card reveal">
+            <div class="post-visual visual-decisions" role="img" aria-label="Абстрактный силуэт дома"></div>
+            <div class="post-content">
+              <div class="post-meta">Проект · решения</div>
+              <h3>Что важно решить до начала работ</h3>
+              <p>Планировка, конструкции, инженерия и материалы как единая система, где всё влияет друг на друга.</p>
+              <a class="text-link" href="#journey">Смотреть этапы <span aria-hidden="true">→</span></a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="follow" aria-labelledby="follow-title">
+      <div class="shell follow-inner reveal">
+        <p class="eyebrow">Продолжение следует</p>
+        <h2 id="follow-title">Дом строится.<br>История остаётся.</h2>
+        <p>Новые записи будут появляться вместе с новыми решениями и этапами. Пока без рассылки — сохраните страницу и возвращайтесь.</p>
+        <a class="button" href="#posts">К последним записям <span class="arrow" aria-hidden="true">↑</span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-inner">
+      <p>© <span id="year"></span> Татьяна · Личный дневник строительства частного дома</p>
+      <a class="to-top" href="#top">Наверх ↑</a>
+    </div>
+  </footer>
+
+  <script>
+    const menuButton = document.querySelector('.menu-button');
+    const navLinks = document.querySelectorAll('.nav-links a');
+
+    function closeMenu() {
+      document.body.classList.remove('menu-open');
+      menuButton.setAttribute('aria-expanded', 'false');
+      menuButton.setAttribute('aria-label', 'Открыть меню');
+    }
+
+    menuButton.addEventListener('click', () => {
+      const opening = !document.body.classList.contains('menu-open');
+      document.body.classList.toggle('menu-open', opening);
+      menuButton.setAttribute('aria-expanded', String(opening));
+      menuButton.setAttribute('aria-label', opening ? 'Закрыть меню' : 'Открыть меню');
+    });
+
+    navLinks.forEach(link => link.addEventListener('click', closeMenu));
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') closeMenu();
+    });
+
+    const revealObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach(element => revealObserver.observe(element));
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
