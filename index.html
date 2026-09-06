@@ -305,7 +305,9 @@
       transition: color .2s ease, background .2s ease, border-color .2s ease;
     }
     .project-nav a:hover,
-    .project-nav a:focus-visible { color: #fff; border-color: var(--ink); background: var(--ink); }
+    .project-nav a:focus-visible,
+    .project-nav a.active { color: #fff; border-color: var(--ink); background: var(--ink); }
+    .project-panel[hidden] { display: none; }
     .project-block-title { margin-bottom: 24px; }
     .project-block-title h3 { margin-bottom: 8px; font-family: Georgia, serif; font-size: clamp(1.8rem, 3vw, 2.7rem); font-weight: 400; line-height: 1.05; }
     .project-block-title p { max-width: 760px; margin-bottom: 0; color: var(--muted); }
@@ -375,9 +377,7 @@
       font-size: .92rem;
     }
     .stairs-case {
-      margin-top: clamp(76px, 10vw, 126px);
-      padding-top: clamp(58px, 8vw, 86px);
-      border-top: 1px solid var(--line);
+      margin-top: 0;
     }
     .stairs-grid { display: grid; grid-template-columns: 1.02fr .98fr; gap: clamp(36px, 6vw, 76px); align-items: start; }
     .stairs-visual { margin: 0; border: 1px solid var(--line); background: var(--paper-light); box-shadow: 12px 12px 0 rgba(23,33,29,.12); }
@@ -396,8 +396,6 @@
     .stairs-docs { display: flex; flex-wrap: wrap; gap: 10px; }
     .stairs-docs a { display: inline-flex; align-items: center; gap: 9px; min-height: 42px; padding: 9px 14px; border: 1px solid var(--ink); border-radius: 999px; font-size: .78rem; font-weight: 800; text-decoration: none; }
     .stairs-docs a:hover, .stairs-docs a:focus-visible { color: #fff; background: var(--ink); }
-    .stairs-warning { margin: 34px 0 0; padding: 20px; color: #fff; background: var(--ink); font-size: .84rem; }
-    .stairs-warning strong { color: #ffc0ae; }
 
     .journey { overflow: hidden; }
     .timeline { position: relative; display: grid; grid-template-columns: repeat(7, minmax(135px, 1fr)); overflow-x: auto; padding: 24px 0 12px; scrollbar-width: thin; }
@@ -767,16 +765,17 @@
           <p class="lead">Основной раздел проекта: архитектура дома и отдельные конструктивные решения, которые уточняются по ходу строительства.</p>
         </div>
 
-        <nav class="project-nav reveal" aria-label="Разделы проекта дома">
-          <a href="#architecture">Архитектура дома <span aria-hidden="true">↓</span></a>
-          <a href="#stairs">Лестница <span aria-hidden="true">↓</span></a>
+        <nav class="project-nav reveal" aria-label="Разделы проекта дома" role="tablist">
+          <a class="project-tab active" id="project-tab-architecture" href="#architecture" role="tab" aria-selected="true" aria-controls="architecture" data-project-tab="architecture">Архитектура дома <span aria-hidden="true">↓</span></a>
+          <a class="project-tab" id="project-tab-stairs" href="#stairs" role="tab" aria-selected="false" aria-controls="stairs" data-project-tab="stairs">Лестница <span aria-hidden="true">↓</span></a>
         </nav>
 
-        <div class="project-block-title reveal" id="architecture">
-          <p class="eyebrow">Проект дома · Архитектура дома</p>
-          <h3>Планы, фасады и разрез</h3>
-          <p>Планы двух этажей, четыре фасада и разрез помогают увидеть будущий дом целиком — от расположения помещений до формы кровли.</p>
-        </div>
+        <div class="project-panel" id="architecture" role="tabpanel" aria-labelledby="project-tab-architecture" data-project-panel>
+          <div class="project-block-title reveal">
+            <p class="eyebrow">Проект дома · Архитектура дома</p>
+            <h3>Планы, фасады и разрез</h3>
+            <p>Планы двух этажей, четыре фасада и разрез помогают увидеть будущий дом целиком — от расположения помещений до формы кровли.</p>
+          </div>
 
         <div class="drawing-tabs reveal" aria-label="Выбор чертежа">
           <button class="drawing-tab active" type="button" aria-pressed="true" data-image="assets/project/architecture/plan-first-floor.png?v=3" data-alt="Архитектурный план первого этажа" data-caption="План первого этажа">Первый этаж</button>
@@ -798,9 +797,10 @@
           </figcaption>
         </figure>
 
-        <p class="drawing-update-note reveal"><strong>Важно:</strong> опубликованные планы первого и второго этажей пока отражают первоначальный проём лестницы 2100 × 2500 мм. После корректировки проекта их заменят актуальные листы с проёмом 2100 × 2700 мм.</p>
+          <p class="drawing-update-note reveal"><strong>Важно:</strong> опубликованные планы первого и второго этажей пока отражают первоначальный проём лестницы 2100 × 2500 мм. После корректировки проекта их заменят актуальные листы с проёмом 2100 × 2700 мм.</p>
+        </div>
 
-        <article class="stairs-case" id="stairs">
+        <article class="stairs-case project-panel" id="stairs" role="tabpanel" aria-labelledby="project-tab-stairs" data-project-panel hidden>
           <div class="stairs-grid">
             <figure class="stairs-visual reveal">
               <img src="assets/project/stairs/stair-visualization.png?v=1" alt="Визуализация монолитной П-образной лестницы с забежными ступенями в строящемся доме" loading="lazy">
@@ -832,10 +832,9 @@
 
           <div class="stairs-docs reveal" aria-label="Документы по лестнице">
             <a href="assets/project/stairs/stair-working-geometry.pdf" target="_blank" rel="noopener">Геометрическая схема <span aria-hidden="true">↗</span></a>
-            <a href="assets/project/stairs/stair-reinforcement-preliminary.pdf" target="_blank" rel="noopener">Предварительная схема армирования <span aria-hidden="true">↗</span></a>
+            <a href="assets/project/stairs/stair-reinforcement-by-sample.pdf" target="_blank" rel="noopener">Армирование лестницы по образцу <span aria-hidden="true">↗</span></a>
           </div>
 
-          <p class="stairs-warning reveal"><strong>Перед строительством:</strong> изменение проёма затрагивает примыкающий участок плиты УМ3. Размеры, узлы опирания и армирование необходимо проверить по фактическому проёму и согласовать с квалифицированным проектировщиком-конструктором. Опубликованная схема армирования — предварительная и не является разрешением на бетонирование.</p>
         </article>
       </div>
     </section>
@@ -1055,6 +1054,42 @@
 
     document.querySelectorAll('.reveal').forEach(element => revealObserver.observe(element));
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    const projectTabs = document.querySelectorAll('[data-project-tab]');
+    const projectPanels = document.querySelectorAll('[data-project-panel]');
+
+    function selectProjectPanel(panelId, updateUrl = false) {
+      const selectedPanel = document.getElementById(panelId);
+      if (!selectedPanel || !selectedPanel.matches('[data-project-panel]')) return;
+
+      projectTabs.forEach(tab => {
+        const selected = tab.dataset.projectTab === panelId;
+        tab.classList.toggle('active', selected);
+        tab.setAttribute('aria-selected', String(selected));
+      });
+
+      projectPanels.forEach(panel => {
+        panel.hidden = panel.id !== panelId;
+      });
+
+      selectedPanel.querySelectorAll('.reveal:not(.visible)').forEach(element => revealObserver.observe(element));
+      if (updateUrl) history.replaceState(null, '', `#${panelId}`);
+    }
+
+    projectTabs.forEach(tab => {
+      tab.addEventListener('click', event => {
+        event.preventDefault();
+        selectProjectPanel(tab.dataset.projectTab, true);
+      });
+    });
+
+    document.querySelectorAll('a[href="#architecture"], a[href="#stairs"]').forEach(link => {
+      if (link.matches('[data-project-tab]')) return;
+      link.addEventListener('click', () => selectProjectPanel(link.hash.slice(1)));
+    });
+
+    window.addEventListener('hashchange', () => selectProjectPanel(window.location.hash.slice(1)));
+    selectProjectPanel(['architecture', 'stairs'].includes(window.location.hash.slice(1)) ? window.location.hash.slice(1) : 'architecture');
 
     const drawingImage = document.getElementById('drawing-image');
     const drawingTitle = document.getElementById('drawing-title');
