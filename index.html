@@ -769,11 +769,11 @@
         </div>
 
         <nav class="project-nav reveal" aria-label="Разделы проекта дома" role="tablist">
-          <a class="project-tab active" id="project-tab-architecture" href="#architecture" role="tab" aria-selected="true" aria-controls="architecture" data-project-tab="architecture">Архитектура дома <span aria-hidden="true">↓</span></a>
+          <a class="project-tab" id="project-tab-architecture" href="#architecture" role="tab" aria-selected="false" aria-controls="architecture" data-project-tab="architecture">Архитектура дома <span aria-hidden="true">↓</span></a>
           <a class="project-tab" id="project-tab-stairs" href="#stairs" role="tab" aria-selected="false" aria-controls="stairs" data-project-tab="stairs">Лестница <span aria-hidden="true">↓</span></a>
         </nav>
 
-        <div class="project-panel" id="architecture" role="tabpanel" aria-labelledby="project-tab-architecture" data-project-panel>
+        <div class="project-panel" id="architecture" role="tabpanel" aria-labelledby="project-tab-architecture" data-project-panel hidden>
           <div class="project-block-title reveal">
             <p class="eyebrow">Проект дома · Архитектура дома</p>
             <h3>Планы, фасады и разрез</h3>
@@ -851,7 +851,7 @@
 
         <div class="timeline" aria-label="Этапы строительства">
           <a class="stage stage-link" href="#idea"><span class="stage-dot">01</span><h3>Идея</h3><p>Образ дома, исходные условия и критерии решений.</p><span class="stage-tag">Открыть раздел →</span></a>
-          <a class="stage stage-link" href="#project"><span class="stage-dot">02</span><h3>Проект</h3><p>Планы, фасады, разрезы и проверка решений.</p><span class="stage-tag">Открыть чертежи →</span></a>
+          <a class="stage stage-link" href="#project"><span class="stage-dot">02</span><h3>Проект</h3><p>Архитектура дома и лестница.</p><span class="stage-tag">Открыть раздел →</span></a>
           <a class="stage stage-link" href="#costs"><span class="stage-dot">03</span><h3>Смета</h3><p>Объёмы, материалы, цены и резерв бюджета.</p><span class="stage-tag">Открыть раздел →</span></a>
           <a class="stage stage-link current" href="#today"><span class="stage-dot">04</span><h3>Стройка</h3><p>Конструкции, узлы и порядок выполнения работ.</p><span class="stage-tag">Смотреть фото →</span></a>
           <article class="stage upcoming"><span class="stage-dot">05</span><h3>Инженерия</h3><p>Тепло, вода, электричество и удобство эксплуатации.</p><span class="stage-tag">Этап впереди</span></article>
@@ -1069,6 +1069,16 @@
     const projectTabs = document.querySelectorAll('[data-project-tab]');
     const projectPanels = document.querySelectorAll('[data-project-panel]');
 
+    function closeProjectPanels() {
+      projectTabs.forEach(tab => {
+        tab.classList.remove('active');
+        tab.setAttribute('aria-selected', 'false');
+      });
+      projectPanels.forEach(panel => {
+        panel.hidden = true;
+      });
+    }
+
     function selectProjectPanel(panelId, updateUrl = false) {
       const selectedPanel = document.getElementById(panelId);
       if (!selectedPanel || !selectedPanel.matches('[data-project-panel]')) return;
@@ -1099,8 +1109,26 @@
       link.addEventListener('click', () => selectProjectPanel(link.hash.slice(1)));
     });
 
-    window.addEventListener('hashchange', () => selectProjectPanel(window.location.hash.slice(1)));
-    selectProjectPanel(['architecture', 'stairs'].includes(window.location.hash.slice(1)) ? window.location.hash.slice(1) : 'architecture');
+    document.querySelectorAll('a[href="#project"]').forEach(link => {
+      link.addEventListener('click', closeProjectPanels);
+    });
+
+    function updateProjectPanelFromHash() {
+      const panelId = window.location.hash.slice(1);
+      if (['architecture', 'stairs'].includes(panelId)) {
+        selectProjectPanel(panelId);
+      } else if (panelId === 'project') {
+        closeProjectPanels();
+      }
+    }
+
+    window.addEventListener('hashchange', updateProjectPanelFromHash);
+    const initialProjectPanel = window.location.hash.slice(1);
+    if (['architecture', 'stairs'].includes(initialProjectPanel)) {
+      selectProjectPanel(initialProjectPanel);
+    } else {
+      closeProjectPanels();
+    }
 
     const drawingImage = document.getElementById('drawing-image');
     const drawingTitle = document.getElementById('drawing-title');
