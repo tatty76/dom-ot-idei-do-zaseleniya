@@ -337,10 +337,35 @@
     .project-nav a:hover,
     .project-nav a:focus-visible,
     .project-nav a.active { color: #fff; border-color: var(--ink); background: var(--ink); }
+    .project-nav a > span { display: inline-block; transition: transform .2s ease; }
+    .project-nav a.active > span { transform: rotate(180deg); }
     .project-panel[hidden] { display: none; }
     .project-block-title { margin-bottom: 24px; }
     .project-block-title h3 { margin-bottom: 8px; font-family: Georgia, serif; font-size: clamp(1.8rem, 3vw, 2.7rem); font-weight: 400; line-height: 1.05; }
     .project-block-title p { max-width: 760px; margin-bottom: 0; color: var(--muted); }
+    .structural-nav { display: flex; margin: 0 0 38px; }
+    .structural-tab {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 44px;
+      padding: 10px 16px;
+      border: 1px solid rgba(23,33,29,.3);
+      border-radius: 999px;
+      color: var(--ink);
+      background: rgba(250,248,242,.36);
+      font: inherit;
+      font-size: .83rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: color .2s ease, background .2s ease, border-color .2s ease;
+    }
+    .structural-tab:hover,
+    .structural-tab:focus-visible,
+    .structural-tab.active { color: #fff; border-color: var(--ink); background: var(--ink); }
+    .structural-tab > span { display: inline-block; transition: transform .2s ease; }
+    .structural-tab.active > span { transform: rotate(180deg); }
+    .structural-panel[hidden] { display: none; }
     .drawing-tabs {
       display: flex;
       gap: 9px;
@@ -644,6 +669,8 @@
       .drawing-caption { align-items: flex-start; flex-direction: column; gap: 14px; }
       .project-nav { align-items: stretch; flex-direction: column; }
       .project-nav a { justify-content: space-between; width: 100%; }
+      .structural-nav { align-items: stretch; flex-direction: column; }
+      .structural-tab { justify-content: space-between; width: 100%; }
       .stairs-visual { box-shadow: 7px 7px 0 rgba(23,33,29,.12); }
       .stairs-metrics { grid-template-columns: 1fr 1fr; }
       .stairs-docs { align-items: stretch; flex-direction: column; }
@@ -813,7 +840,7 @@
 
         <nav class="project-nav reveal" aria-label="Разделы проекта дома" role="tablist">
           <a class="project-tab" id="project-tab-architecture" href="#architecture" role="tab" aria-selected="false" aria-controls="architecture" data-project-tab="architecture">Архитектура дома <span aria-hidden="true">↓</span></a>
-          <a class="project-tab" id="project-tab-stairs" href="#stairs" role="tab" aria-selected="false" aria-controls="stairs" data-project-tab="stairs">Лестница <span aria-hidden="true">↓</span></a>
+          <a class="project-tab" id="project-tab-structure" href="#structure" role="tab" aria-selected="false" aria-controls="structure" data-project-tab="structure">Конструктивные решения <span aria-hidden="true">↓</span></a>
         </nav>
 
         <div class="project-panel" id="architecture" role="tabpanel" aria-labelledby="project-tab-architecture" data-project-panel hidden>
@@ -846,7 +873,18 @@
           <p class="drawing-update-note reveal"><strong>Важно:</strong> опубликованные планы первого и второго этажей пока отражают первоначальный проём лестницы 2100 × 2500 мм. После корректировки проекта их заменят актуальные листы с проёмом 2100 × 2700 мм.</p>
         </div>
 
-        <article class="stairs-case project-panel" id="stairs" role="tabpanel" aria-labelledby="project-tab-stairs" data-project-panel hidden>
+        <div class="project-panel" id="structure" role="tabpanel" aria-labelledby="project-tab-structure" data-project-panel hidden>
+          <div class="project-block-title reveal">
+            <p class="eyebrow">Проект дома · Конструктивные решения</p>
+            <h3>Отдельные узлы и конструкции</h3>
+            <p>Здесь будут собраны конструктивные решения дома, которые требуют отдельного расчёта, уточнения размеров и рабочих чертежей.</p>
+          </div>
+
+          <div class="structural-nav reveal">
+            <button class="structural-tab" id="structural-tab-stairs" type="button" aria-expanded="false" aria-controls="stairs" data-structural-tab="stairs">Лестница <span aria-hidden="true">↓</span></button>
+          </div>
+
+        <article class="stairs-case structural-panel" id="stairs" aria-labelledby="structural-tab-stairs" data-structural-panel hidden>
           <div class="stairs-grid">
             <figure class="stairs-visual reveal">
               <img src="assets/project/stairs/stair-visualization.png?v=1" alt="Визуализация монолитной П-образной лестницы с забежными ступенями в строящемся доме" loading="lazy">
@@ -882,6 +920,7 @@
           </div>
 
         </article>
+        </div>
       </div>
     </section>
 
@@ -894,7 +933,7 @@
 
         <div class="timeline" aria-label="Этапы строительства">
           <a class="stage stage-link" href="#idea"><span class="stage-dot">01</span><h3>Идея</h3><p>Образ дома, исходные условия и критерии решений.</p><span class="stage-tag">Открыть раздел →</span></a>
-          <a class="stage stage-link" href="#project"><span class="stage-dot">02</span><h3>Проект</h3><p>Архитектура дома и лестница.</p><span class="stage-tag">Открыть раздел →</span></a>
+          <a class="stage stage-link" href="#project"><span class="stage-dot">02</span><h3>Проект</h3><p>Архитектура дома и конструктивные решения.</p><span class="stage-tag">Открыть раздел →</span></a>
           <a class="stage stage-link" href="#costs"><span class="stage-dot">03</span><h3>Смета</h3><p>Объёмы, материалы, цены и резерв бюджета.</p><span class="stage-tag">Открыть раздел →</span></a>
           <a class="stage stage-link current" href="#today"><span class="stage-dot">04</span><h3>Стройка</h3><p>Конструкции, узлы и порядок выполнения работ.</p><span class="stage-tag">Смотреть фото →</span></a>
           <article class="stage upcoming"><span class="stage-dot">05</span><h3>Инженерия</h3><p>Тепло, вода, электричество и удобство эксплуатации.</p><span class="stage-tag">Этап впереди</span></article>
@@ -913,21 +952,21 @@
 
         <div class="today-grid">
           <figure class="today-card today-card--wide reveal">
-            <img src="assets/house-current.jpg" alt="Общий вид кирпичной коробки дома со стороны участка" loading="lazy">
-            <figcaption>Общий вид дома со стороны участка</figcaption>
+            <img src="assets/house-current.jpg" alt="Фасад строящегося дома по оси Е" loading="lazy">
+            <figcaption>Фасад по оси Е</figcaption>
           </figure>
           <div class="today-status reveal"><span>Текущий этап</span><strong>Возведение коробки дома</strong></div>
           <figure class="today-card reveal">
-            <img src="assets/photos/facade-long-left.jpg" alt="Продольный кирпичный фасад с четырьмя оконными проёмами" loading="lazy">
-            <figcaption>Продольный фасад</figcaption>
+            <img src="assets/photos/facade-long-left.jpg" alt="Фасад строящегося дома по оси 1" loading="lazy">
+            <figcaption>Фасад по оси 1</figcaption>
           </figure>
           <figure class="today-card reveal">
-            <img src="assets/photos/facade-long-right.jpg" alt="Угловой вид кирпичного фасада строящегося дома" loading="lazy">
-            <figcaption>Угловой вид фасада</figcaption>
+            <img src="assets/photos/facade-long-right.jpg" alt="Фасад строящегося дома по оси 3" loading="lazy">
+            <figcaption>Фасад по оси 3</figcaption>
           </figure>
           <figure class="today-card reveal">
-            <img src="assets/photos/facade-front.jpg" alt="Фасад строящегося дома с оконными и дверными проёмами" loading="lazy">
-            <figcaption>Фасад с основными проёмами</figcaption>
+            <img src="assets/photos/facade-front.jpg" alt="Фасад строящегося дома по оси А" loading="lazy">
+            <figcaption>Фасад по оси А</figcaption>
           </figure>
         </div>
       </div>
@@ -1122,6 +1161,18 @@
 
     const projectTabs = document.querySelectorAll('[data-project-tab]');
     const projectPanels = document.querySelectorAll('[data-project-panel]');
+    const structuralTabs = document.querySelectorAll('[data-structural-tab]');
+    const structuralPanels = document.querySelectorAll('[data-structural-panel]');
+
+    function closeStructuralPanels() {
+      structuralTabs.forEach(tab => {
+        tab.classList.remove('active');
+        tab.setAttribute('aria-expanded', 'false');
+      });
+      structuralPanels.forEach(panel => {
+        panel.hidden = true;
+      });
+    }
 
     function closeProjectPanels() {
       projectTabs.forEach(tab => {
@@ -1131,6 +1182,7 @@
       projectPanels.forEach(panel => {
         panel.hidden = true;
       });
+      closeStructuralPanels();
     }
 
     function selectProjectPanel(panelId, updateUrl = false) {
@@ -1144,6 +1196,25 @@
       });
 
       projectPanels.forEach(panel => {
+        panel.hidden = panel.id !== panelId;
+      });
+
+      if (panelId !== 'structure') closeStructuralPanels();
+      selectedPanel.querySelectorAll('.reveal:not(.visible)').forEach(element => revealObserver.observe(element));
+      if (updateUrl) history.replaceState(null, '', `#${panelId}`);
+    }
+
+    function selectStructuralPanel(panelId, updateUrl = false) {
+      const selectedPanel = document.getElementById(panelId);
+      if (!selectedPanel || !selectedPanel.matches('[data-structural-panel]')) return;
+
+      structuralTabs.forEach(tab => {
+        const selected = tab.dataset.structuralTab === panelId;
+        tab.classList.toggle('active', selected);
+        tab.setAttribute('aria-expanded', String(selected));
+      });
+
+      structuralPanels.forEach(panel => {
         panel.hidden = panel.id !== panelId;
       });
 
@@ -1163,9 +1234,28 @@
       });
     });
 
-    document.querySelectorAll('a[href="#architecture"], a[href="#stairs"]').forEach(link => {
+    structuralTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        if (tab.classList.contains('active')) {
+          closeStructuralPanels();
+          history.replaceState(null, '', '#structure');
+        } else {
+          selectStructuralPanel(tab.dataset.structuralTab, true);
+        }
+      });
+    });
+
+    document.querySelectorAll('a[href="#architecture"], a[href="#structure"], a[href="#stairs"]').forEach(link => {
       if (link.matches('[data-project-tab]')) return;
-      link.addEventListener('click', () => selectProjectPanel(link.hash.slice(1)));
+      link.addEventListener('click', () => {
+        const panelId = link.hash.slice(1);
+        if (panelId === 'stairs') {
+          selectProjectPanel('structure');
+          selectStructuralPanel('stairs');
+        } else {
+          selectProjectPanel(panelId);
+        }
+      });
     });
 
     document.querySelectorAll('a[href="#project"]').forEach(link => {
@@ -1174,8 +1264,12 @@
 
     function updateProjectPanelFromHash() {
       const panelId = window.location.hash.slice(1);
-      if (['architecture', 'stairs'].includes(panelId)) {
+      if (['architecture', 'structure'].includes(panelId)) {
         selectProjectPanel(panelId);
+        if (panelId === 'structure') closeStructuralPanels();
+      } else if (panelId === 'stairs') {
+        selectProjectPanel('structure');
+        selectStructuralPanel('stairs');
       } else if (panelId === 'project') {
         closeProjectPanels();
       }
@@ -1183,8 +1277,11 @@
 
     window.addEventListener('hashchange', updateProjectPanelFromHash);
     const initialProjectPanel = window.location.hash.slice(1);
-    if (['architecture', 'stairs'].includes(initialProjectPanel)) {
+    if (['architecture', 'structure'].includes(initialProjectPanel)) {
       selectProjectPanel(initialProjectPanel);
+    } else if (initialProjectPanel === 'stairs') {
+      selectProjectPanel('structure');
+      selectStructuralPanel('stairs');
     } else {
       closeProjectPanels();
     }
