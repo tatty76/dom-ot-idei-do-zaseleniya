@@ -1154,7 +1154,12 @@
     projectTabs.forEach(tab => {
       tab.addEventListener('click', event => {
         event.preventDefault();
-        selectProjectPanel(tab.dataset.projectTab, true);
+        if (tab.classList.contains('active')) {
+          closeProjectPanels();
+          history.replaceState(null, '', '#project');
+        } else {
+          selectProjectPanel(tab.dataset.projectTab, true);
+        }
       });
     });
 
