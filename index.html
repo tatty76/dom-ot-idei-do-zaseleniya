@@ -984,7 +984,11 @@
           <a class="request-email" href="mailto:gatatsiana@gmail.com">gatatsiana@gmail.com</a>
         </div>
 
-        <form class="request-form reveal" id="request-form">
+        <form class="request-form reveal" id="request-form" action="https://formsubmit.co/gatatsiana@gmail.com" method="POST">
+          <input type="hidden" name="_subject" value="Заявка с лендинга">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_next" value="https://tatty76.github.io/dom-ot-idei-do-zaseleniya/?sent=1#request">
+          <input type="hidden" name="_url" value="https://tatty76.github.io/dom-ot-idei-do-zaseleniya/#request">
           <div class="form-honey" aria-hidden="true">
             <label for="request-company">Компания</label>
             <input id="request-company" name="_honey" type="text" tabindex="-1" autocomplete="off">
@@ -1129,7 +1133,6 @@
     const sendRequestButton = document.getElementById('send-request');
     const copyRequestButton = document.getElementById('copy-request');
     const formStatus = document.getElementById('form-status');
-    const formSubmitEndpoint = 'https://formsubmit.co/ajax/gatatsiana@gmail.com';
 
     function getRequestText() {
       const data = new FormData(requestForm);
@@ -1149,48 +1152,18 @@
       formStatus.focus({ preventScroll: true });
     }
 
-    requestForm.addEventListener('submit', async event => {
-      event.preventDefault();
-      if (!requestForm.reportValidity()) return;
-
-      const data = new FormData(requestForm);
-      const originalButtonText = sendRequestButton.innerHTML;
+    requestForm.addEventListener('submit', () => {
       sendRequestButton.disabled = true;
       sendRequestButton.textContent = 'Отправляем…';
-      showRequestStatus('Отправляем заявку…');
-
-      try {
-        const response = await fetch(formSubmitEndpoint, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          },
-          body: JSON.stringify({
-            name: data.get('name').trim(),
-            contact: data.get('contact').trim(),
-            message: data.get('message').trim(),
-            _subject: 'Заявка с лендинга',
-            _template: 'table',
-            _url: window.location.href,
-            _honey: data.get('_honey')
-          })
-        });
-
-        const result = await response.json();
-        if (!response.ok || result.success === false || result.success === 'false') {
-          throw new Error(result.message || 'FormSubmit error');
-        }
-
-        requestForm.reset();
-        showRequestStatus('Спасибо, заявка отправлена.');
-      } catch (error) {
-        showRequestStatus('Не удалось отправить заявку. Скопируйте её текст и отправьте на указанную почту.', true);
-      } finally {
-        sendRequestButton.disabled = false;
-        sendRequestButton.innerHTML = originalButtonText;
-      }
+      showRequestStatus('Переходим к защищённой отправке…');
     });
+
+    const pageUrl = new URL(window.location.href);
+    if (pageUrl.searchParams.get('sent') === '1') {
+      showRequestStatus('Спасибо, заявка отправлена.');
+      pageUrl.searchParams.delete('sent');
+      history.replaceState(null, '', `${pageUrl.pathname}${pageUrl.search}${pageUrl.hash}`);
+    }
 
     copyRequestButton.addEventListener('click', async () => {
       if (!requestForm.reportValidity()) return;
