@@ -280,9 +280,39 @@
     .idea-question strong { display: block; max-width: 600px; font-family: Georgia, serif; font-size: clamp(1.75rem, 3.2vw, 2.75rem); font-weight: 400; line-height: 1.08; }
     .idea-points { border-top: 1px solid var(--line); }
     .idea-point { display: grid; grid-template-columns: 54px 1fr; gap: 18px; padding: 24px 0; border-bottom: 1px solid var(--line); }
-    .idea-point > span { color: var(--accent-dark); font-size: .75rem; font-weight: 800; }
+    .idea-point > span:first-child { color: var(--accent-dark); font-size: .75rem; font-weight: 800; }
     .idea-point h3 { margin-bottom: 7px; font-family: Georgia, serif; font-size: 1.28rem; font-weight: 400; }
     .idea-point p { margin-bottom: 0; color: var(--muted); font-size: .94rem; }
+    .idea-point--button {
+      width: 100%;
+      border: 0;
+      border-bottom: 1px solid var(--line);
+      color: var(--ink);
+      background: transparent;
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+      transition: background .2s ease;
+    }
+    .idea-point--button:hover,
+    .idea-point--button:focus-visible { background: rgba(221,93,59,.06); }
+    .idea-point--button:focus-visible { outline: 2px solid var(--accent-dark); outline-offset: 3px; }
+    .idea-point-content { display: block; }
+    .idea-point-title { display: block; margin-bottom: 7px; font-family: Georgia, serif; font-size: 1.28rem; font-weight: 400; }
+    .idea-point-text { display: block; color: var(--muted); font-size: .94rem; }
+    .idea-point-action { display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; color: var(--accent-dark); font-size: .76rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
+    .idea-point-arrow { display: inline-block; transition: transform .2s ease; }
+    .idea-point--button[aria-expanded="true"] .idea-point-arrow { transform: rotate(180deg); }
+    .house-vision[hidden] { display: none; }
+    .house-vision {
+      padding: clamp(28px, 5vw, 48px);
+      border-bottom: 1px solid var(--line);
+      border-left: 4px solid var(--accent);
+      background: #f2eee5;
+    }
+    .house-vision h3 { max-width: 640px; margin-bottom: 24px; font-family: Georgia, serif; font-size: clamp(1.85rem, 3.5vw, 2.65rem); font-weight: 400; line-height: 1.08; }
+    .house-vision p:not(.eyebrow) { max-width: 700px; color: #46534c; font-size: 1rem; }
+    .house-vision .text-link { margin-top: 8px; }
 
     .project { overflow: hidden; background: #dfe6dd; }
     .project-nav {
@@ -740,10 +770,23 @@
           </div>
 
           <div class="idea-points">
-            <article class="idea-point">
+            <button class="idea-point idea-point--button" id="house-vision-toggle" type="button" aria-expanded="false" aria-controls="house-vision">
               <span>01</span>
-              <div><h3>Образ дома</h3><p>Собственный частный дом для повседневной жизни — не выставочная картинка, а место, где планировка, конструкции и детали действительно работают.</p></div>
-            </article>
+              <span class="idea-point-content">
+                <span class="idea-point-title">Образ дома</span>
+                <span class="idea-point-text">Спокойный, красивый и надёжный дом, построенный из материалов, выбранных на долгие годы.</span>
+                <span class="idea-point-action"><span data-vision-action>Открыть раздел</span> <span class="idea-point-arrow" aria-hidden="true">↓</span></span>
+              </span>
+            </button>
+            <div class="house-vision" id="house-vision" hidden>
+              <p class="eyebrow">Материалы и характер дома</p>
+              <h3>Дом, рассчитанный на долгую жизнь</h3>
+              <p>Основой наружных стен стали керамзитобетонные блоки толщиной 380 миллиметров. Это прочный и практичный материал, который помогает сохранять тепло и создавать комфортный микроклимат внутри дома.</p>
+              <p>Для наружной облицовки я выбрала настоящий кирпич. Для меня было важно, чтобы фасад выглядел естественно и достойно не только после завершения строительства, но и спустя много лет.</p>
+              <p>Кирпич — долговечный и устойчивый к погодным условиям материал. Но выбор был продиктован не только практичностью. Настоящая кирпичная кладка придаёт дому глубину, характер и ощущение основательности. Тёплый оттенок кирпича смягчает строгую геометрию фасадов и помогает дому естественно вписаться в окружающий участок.</p>
+              <p>Именно таким мне хотелось видеть свой дом — спокойным, красивым и надёжным, построенным из материалов, выбранных на долгие годы.</p>
+              <a class="text-link" href="#today">Посмотреть, как этот образ воплощается <span aria-hidden="true">→</span></a>
+            </div>
             <article class="idea-point">
               <span>02</span>
               <div><h3>Исходные условия</h3><p>Климат Беларуси, особенности участка, доступные материалы, технология работ и бюджет рассматриваются как части одной задачи.</p></div>
@@ -1065,6 +1108,17 @@
 
     document.querySelectorAll('.reveal').forEach(element => revealObserver.observe(element));
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    const houseVisionToggle = document.getElementById('house-vision-toggle');
+    const houseVision = document.getElementById('house-vision');
+    const houseVisionAction = houseVisionToggle.querySelector('[data-vision-action]');
+
+    houseVisionToggle.addEventListener('click', () => {
+      const opening = houseVisionToggle.getAttribute('aria-expanded') !== 'true';
+      houseVisionToggle.setAttribute('aria-expanded', String(opening));
+      houseVision.hidden = !opening;
+      houseVisionAction.textContent = opening ? 'Свернуть раздел' : 'Открыть раздел';
+    });
 
     const projectTabs = document.querySelectorAll('[data-project-tab]');
     const projectPanels = document.querySelectorAll('[data-project-panel]');
