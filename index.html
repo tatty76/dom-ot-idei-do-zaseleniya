@@ -512,8 +512,10 @@
     .form-row textarea:focus { border-color: #ffc0ae; }
     .form-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
     .form-actions .button { border: 0; cursor: pointer; font-size: .92rem; }
+    .form-actions .button:disabled { cursor: wait; opacity: .62; }
     .button--copy { border: 1px solid rgba(255,255,255,.35) !important; background: transparent; }
     .button--copy:hover, .button--copy:focus-visible { background: rgba(255,255,255,.08); }
+    .form-honey { position: absolute !important; left: -9999px !important; width: 1px !important; height: 1px !important; overflow: hidden !important; }
     .form-note { margin: 20px 0 0; color: #aeb8b1; font-size: .82rem; }
     .form-status {
       margin: 22px 0 0;
@@ -523,6 +525,7 @@
       background: rgba(159,199,149,.1);
       font-weight: 700;
     }
+    .form-status--error { border-left-color: #ff9d84; color: #ffe9e3; background: rgba(221,93,59,.14); }
 
     .follow { padding-block: clamp(90px, 12vw, 170px); text-align: center; background: var(--accent); }
     .follow-inner { max-width: 920px; }
@@ -977,11 +980,15 @@
         <div class="request-copy reveal">
           <p class="eyebrow">Обратная связь</p>
           <h2 id="request-title">Есть вопрос или предложение?</h2>
-          <p>Заполните поля — сайт подготовит готовое письмо в вашем почтовом приложении. Отправка произойдёт только после вашего подтверждения.</p>
+          <p>Заполните поля и нажмите «Отправить» — заявка будет отправлена прямо со страницы, без открытия почтового приложения.</p>
           <a class="request-email" href="mailto:gatatsiana@gmail.com">gatatsiana@gmail.com</a>
         </div>
 
         <form class="request-form reveal" id="request-form">
+          <div class="form-honey" aria-hidden="true">
+            <label for="request-company">Компания</label>
+            <input id="request-company" name="_honey" type="text" tabindex="-1" autocomplete="off">
+          </div>
           <div class="form-row">
             <label for="request-name">Имя</label>
             <input id="request-name" name="name" type="text" autocomplete="name" placeholder="Как к вам обращаться" required>
@@ -995,11 +1002,11 @@
             <textarea id="request-message" name="message" placeholder="Напишите ваш вопрос или предложение" required></textarea>
           </div>
           <div class="form-actions">
-            <button class="button" type="submit">Отправить <span aria-hidden="true">↗</span></button>
+            <button class="button" id="send-request" type="submit">Отправить <span aria-hidden="true">↗</span></button>
             <button class="button button--copy" id="copy-request" type="button">Скопировать текст заявки</button>
           </div>
-          <p class="form-note">Сайт не хранит и не передаёт введённые данные на сервер.</p>
-          <p class="form-status" id="form-status" role="status" aria-live="polite" tabindex="-1" hidden>Спасибо, заявка готова к отправке</p>
+          <p class="form-note">Сайт не хранит введённые данные. Для доставки письма они передаются сервису FormSubmit.</p>
+          <p class="form-status" id="form-status" role="status" aria-live="polite" tabindex="-1" hidden></p>
         </form>
       </div>
     </section>
@@ -1119,8 +1126,10 @@
     });
 
     const requestForm = document.getElementById('request-form');
+    const sendRequestButton = document.getElementById('send-request');
     const copyRequestButton = document.getElementById('copy-request');
     const formStatus = document.getElementById('form-status');
+    const formSubmitEndpoint = 'https://formsubmit.co/ajax/gatatsiana@gmail.com';
 
     function getRequestText() {
       const data = new FormData(requestForm);
@@ -1133,19 +1142,54 @@
       ].join('\n');
     }
 
-    function showRequestStatus() {
+    function showRequestStatus(message, isError = false) {
+      formStatus.textContent = message;
+      formStatus.classList.toggle('form-status--error', isError);
       formStatus.hidden = false;
       formStatus.focus({ preventScroll: true });
     }
 
-    requestForm.addEventListener('submit', event => {
+    requestForm.addEventListener('submit', async event => {
       event.preventDefault();
       if (!requestForm.reportValidity()) return;
 
-      const subject = encodeURIComponent('Заявка с лендинга');
-      const body = encodeURIComponent(getRequestText());
-      showRequestStatus();
-      window.location.href = `mailto:gatatsiana@gmail.com?subject=${subject}&body=${body}`;
+      const data = new FormData(requestForm);
+      const originalButtonText = sendRequestButton.innerHTML;
+      sendRequestButton.disabled = true;
+      sendRequestButton.textContent = 'Отправляем…';
+      showRequestStatus('Отправляем заявку…');
+
+      try {
+        const response = await fetch(formSubmitEndpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            name: data.get('name').trim(),
+            contact: data.get('contact').trim(),
+            message: data.get('message').trim(),
+            _subject: 'Заявка с лендинга',
+            _template: 'table',
+            _url: window.location.href,
+            _honey: data.get('_honey')
+          })
+        });
+
+        const result = await response.json();
+        if (!response.ok || result.success === false || result.success === 'false') {
+          throw new Error(result.message || 'FormSubmit error');
+        }
+
+        requestForm.reset();
+        showRequestStatus('Спасибо, заявка отправлена.');
+      } catch (error) {
+        showRequestStatus('Не удалось отправить заявку. Скопируйте её текст и отправьте на указанную почту.', true);
+      } finally {
+        sendRequestButton.disabled = false;
+        sendRequestButton.innerHTML = originalButtonText;
+      }
     });
 
     copyRequestButton.addEventListener('click', async () => {
@@ -1165,7 +1209,7 @@
         fallback.remove();
       }
 
-      showRequestStatus();
+      showRequestStatus('Спасибо, текст заявки скопирован.');
     });
   </script>
 </body>
